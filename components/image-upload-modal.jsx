@@ -703,3 +703,187 @@ const ImageUploadModal = ({
 };
 
 export default ImageUploadModal;
+
+
+
+
+// "use client";
+
+// import React, { useState } from "react";
+// import { useForm } from "react-hook-form";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+// } from "@/components/ui/dialog";
+// import { Button } from "@/components/ui/button";
+// import { Textarea } from "@/components/ui/textarea";
+// import { Slider } from "@/components/ui/slider";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { Upload, Loader2, Wand2, RefreshCw, Check } from "lucide-react";
+// import { useDropzone } from "react-dropzone";
+// import { toast } from "sonner";
+// import {
+//   uploadToCloudinary,
+//   buildCloudinaryUrl,
+// } from "@/lib/cloudinary";
+
+// const ImageUploadModal = ({ isOpen, onClose, onImageSelect }) => {
+//   const [uploadedImage, setUploadedImage] = useState(null);
+//   const [preview, setPreview] = useState(null);
+//   const [loading, setLoading] = useState(false);
+
+//   const { watch, setValue, reset } = useForm({
+//     defaultValues: {
+//       text: "",
+//       fontSize: 40,
+//       color: "#ffffff",
+//       position: "south_east",
+//     },
+//   });
+
+//   const values = watch();
+
+//   // Upload
+//   const onDrop = async (files) => {
+//     const file = files[0];
+//     if (!file) return;
+
+//     setLoading(true);
+
+//     const res = await uploadToCloudinary(file);
+
+//     if (res.success) {
+//       setUploadedImage(res.data);
+//       setPreview(res.data.url);
+//       toast.success("Uploaded!");
+//     } else {
+//       toast.error("Upload failed");
+//     }
+
+//     setLoading(false);
+//   };
+
+//   const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+//   // Apply Transform
+//   const applyTransform = () => {
+//     if (!uploadedImage) return;
+
+//     const newUrl = buildCloudinaryUrl(uploadedImage.url, {
+//       text: values.text,
+//       fontSize: values.fontSize,
+//       color: values.color.replace("#", ""),
+//       position: values.position,
+//     });
+
+//     setPreview(newUrl);
+//   };
+
+//   const resetAll = () => {
+//     reset();
+//     setPreview(uploadedImage?.url);
+//   };
+
+//   return (
+//     <Dialog open={isOpen} onOpenChange={onClose}>
+//       <DialogContent className="max-w-5xl">
+//         <DialogHeader>
+//           <DialogTitle>Cloudinary Editor</DialogTitle>
+//         </DialogHeader>
+
+//         <div className="grid grid-cols-2 gap-6">
+
+//           {/* LEFT */}
+//           <div className="space-y-4">
+//             <div {...getRootProps()} className="border p-6 text-center cursor-pointer">
+//               <input {...getInputProps()} />
+//               {loading ? (
+//                 <Loader2 className="animate-spin mx-auto" />
+//               ) : (
+//                 <Upload className="mx-auto" />
+//               )}
+//             </div>
+
+//             <Textarea
+//               placeholder="Enter text"
+//               value={values.text}
+//               onChange={(e) => setValue("text", e.target.value)}
+//             />
+
+//             <Slider
+//               value={[values.fontSize]}
+//               onValueChange={(v) => setValue("fontSize", v[0])}
+//               max={100}
+//             />
+
+//             <input
+//               type="color"
+//               value={values.color}
+//               onChange={(e) => setValue("color", e.target.value)}
+//             />
+
+//             <Select
+//               value={values.position}
+//               onValueChange={(v) => setValue("position", v)}
+//             >
+//               <SelectTrigger>
+//                 <SelectValue />
+//               </SelectTrigger>
+//               <SelectContent>
+//                 <SelectItem value="center">Center</SelectItem>
+//                 <SelectItem value="north">Top</SelectItem>
+//                 <SelectItem value="south">Bottom</SelectItem>
+//                 <SelectItem value="east">Right</SelectItem>
+//                 <SelectItem value="west">Left</SelectItem>
+//                 <SelectItem value="north_east">Top Right</SelectItem>
+//                 <SelectItem value="north_west">Top Left</SelectItem>
+//                 <SelectItem value="south_east">Bottom Right</SelectItem>
+//                 <SelectItem value="south_west">Bottom Left</SelectItem>
+//               </SelectContent>
+//             </Select>
+
+//             <Button onClick={applyTransform}>
+//               <Wand2 className="mr-2" />
+//               Apply
+//             </Button>
+
+//             <Button variant="outline" onClick={resetAll}>
+//               <RefreshCw className="mr-2" />
+//               Reset
+//             </Button>
+//           </div>
+
+//           {/* RIGHT */}
+//           <div>
+//             {preview && (
+//               <img
+//                 src={preview}
+//                 className="w-full rounded"
+//                 onError={() => toast.error("Failed to load")}
+//               />
+//             )}
+
+//             <Button
+//               className="w-full mt-3 bg-green-600"
+//               onClick={() => onImageSelect({ url: preview })}
+//             >
+//               <Check className="mr-2" />
+//               Use Image
+//             </Button>
+//           </div>
+
+//         </div>
+//       </DialogContent>
+//     </Dialog>
+//   );
+// };
+
+// export default ImageUploadModal;
